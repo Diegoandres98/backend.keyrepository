@@ -1,4 +1,4 @@
-import {ApolloServer, gql, UserInputError} from 'apollo-server'
+import { ApolloServer, gql, UserInputError } from 'apollo-server'
 
 import './ConectionDB/db.js'
 import User from './Models/users.js'
@@ -48,19 +48,19 @@ const typeDefinitions = gql`
 const resolvers = {
     Query: {
         userCount: () => User.collection.countDocuments(),
-        allUsers: async ( root,args ) => {
+        allUsers: async ( _root,_args ) => {
             return User.find({})
         },
-        findUser: (root, args) => {
+        findUser: (_root, args) => {
             const { correo } = args
             return User.findOne({ correo }).exec() 
         },
-        me: (root, args, context) => {
+        me: (_root, _args, context) => {
             return context.currentUser
         }
     },
     Mutation: {
-        createUser: (root, args)=>{
+        createUser: (_root, args)=>{
             const user = new User({...args})
             return user.save().catch( error => {
                 throw new UserInputError (error.message,{
@@ -68,7 +68,7 @@ const resolvers = {
                 })
             })
         },
-        login: async (root, args) => {
+        login: async (_root, args) => {
             const user = await User.findOne({ correo: args.correo })
             if (!user || args.password !== user.password){
                 throw new UserInputError('credenciales invalidas')
