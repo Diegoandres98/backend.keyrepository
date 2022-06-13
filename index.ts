@@ -1,11 +1,12 @@
 import { ApolloServer, gql, UserInputError } from 'apollo-server'
 
-import './ConectionDB/db.js'
-import User from './Models/users.js'
+import { connect } from './ConectionDB/db'
+import User from './Models/users'
 import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = 'ESTA ES LA PALABRA MAS SEGURA QUE PUDE ENCONTRAR PARA ESTO FUNCIONE MELITO, MIENTRAS CONSIGO LAS ENV'
 
+connect()
 
 const typeDefinitions = gql`
     type Address {
