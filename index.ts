@@ -48,27 +48,27 @@ const typeDefinitions = gql`
 const resolvers = {
     Query: {
         userCount: () => User.collection.countDocuments(),
-        allUsers: async ( _root,_args ) => {
+        allUsers: async ( _root: any,_args: any ) => {
             return User.find({})
         },
-        findUser: (_root, args) => {
+        findUser: (_root: any, args: { correo: any }) => {
             const { correo } = args
             return User.findOne({ correo }).exec() 
         },
-        me: (_root, _args, context) => {
+        me: (_root: any, _args: any, context: { currentUser: any }) => {
             return context.currentUser
         }
     },
     Mutation: {
-        createUser: (_root, args)=>{
+        createUser: (_root: any, args: any)=>{
             const user = new User({...args})
-            return user.save().catch( error => {
+            return user.save().catch( (error: { message: string }) => {
                 throw new UserInputError (error.message,{
                     invalidArgs: args
                 })
             })
         },
-        login: async (_root, args) => {
+        login: async (_root: any, args: { correo: any; password: any }) => {
             const user = await User.findOne({ correo: args.correo })
             if (!user || args.password !== user.password){
                 throw new UserInputError('credenciales invalidas')
@@ -85,6 +85,11 @@ const resolvers = {
         }
     },
 }
+
+interface JwtPayload {
+    _id: string
+}
+
 const server = new ApolloServer ({
     typeDefs: typeDefinitions,
     resolvers,
@@ -92,10 +97,11 @@ const server = new ApolloServer ({
         const auth = req ? req.headers.authorization : null
         if (auth && auth.startsWith('bearer ')){
             const token = auth.substring(7)
-            const { id } = jwt.verify(token, JWT_SECRET)
-            const currentUser = User.findById(id).exec()
+            const { _id } = jwt.verify(token, JWT_SECRET) as JwtPayload
+            const currentUser = User.findById(_id).exec()
             return { currentUser }
         }
+        return undefined
     }
 })
 
