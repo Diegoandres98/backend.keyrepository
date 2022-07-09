@@ -1,7 +1,7 @@
-import { Query } from './query'
-import { Mutation } from './mutation'
+import { UserQuery } from './query'
+import { UserMutation } from './mutation'
 
-export const ResolversUser= {
-    ...Query,
-    ...Mutation
+export const UserResolvers = {
+    ...UserQuery,
+    ...UserMutation
 }

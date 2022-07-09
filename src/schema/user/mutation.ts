@@ -3,7 +3,7 @@ import { UserInputError } from 'apollo-server'
 import jwt from 'jsonwebtoken'
 const JWT_SECRET = 'ESTA ES LA PALABRA MAS SEGURA QUE PUDE ENCONTRAR PARA ESTO FUNCIONE MELITO, MIENTRAS CONSIGO LAS ENV'
 
-export const Mutation = {
+export const UserMutation = {
     Mutation: {
         createUser: (_root: any, args: any)=>{
             const user = new UserModel({...args})

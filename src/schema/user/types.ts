@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server'
 
-export const typeDefinitions = gql`
+export const UserTypes = gql`
     type Address {
         street: String!
         city: String!

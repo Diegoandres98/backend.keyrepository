@@ -1,6 +1,6 @@
 import { UserModel } from './models'
 
-export const Query = {
+export const UserQuery = {
     Query: {
         userCount: () => UserModel.collection.countDocuments(),
         allUsers: async ( _root: any,_args: any ) => {
