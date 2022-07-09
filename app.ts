@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server'
-import { connect } from './ConectionDB/db'
+import { connect } from './src/ConectionDB/db'
 import { typeDefs, resolvers } from './src/schema'
 import jwt from 'jsonwebtoken'
 import { UserModel } from './src/schema/user/models'
