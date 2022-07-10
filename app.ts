@@ -6,7 +6,9 @@ import { UserModel } from './src/schema/user/models'
 const JWT_SECRET = 'ESTA ES LA PALABRA MAS SEGURA QUE PUDE ENCONTRAR PARA ESTO FUNCIONE MELITO, MIENTRAS CONSIGO LAS ENV'
 connect()
 interface JwtPayload {
-    _id: string
+    id: string,
+    correo: string,
+    nameUser: string
 }
 
 const server = new ApolloServer ({
@@ -14,10 +16,10 @@ const server = new ApolloServer ({
     resolvers,
     context: async ({ req }) => {
         const auth = req ? req.headers.authorization : null
-        if (auth && auth.startsWith('bearer ')){
+        if (auth && auth.toLowerCase().startsWith('bearer ')){
             const token = auth.substring(7)
-            const { _id } = jwt.verify(token, JWT_SECRET) as JwtPayload
-            const currentUser = UserModel.findById(_id).exec()
+            const { id } = jwt.verify(token, JWT_SECRET) as JwtPayload
+            const currentUser = UserModel.findById(id).exec()
             return { currentUser }
         }
         return undefined
